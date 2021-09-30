@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import ComposableArchitecture
+import Combine
+import SuperPlayer
 
 public final class PlayerControlView: UIView {
     internal static let height: CGFloat = 32
@@ -20,8 +23,18 @@ public final class PlayerControlView: UIView {
     private let seekBar: PlayerSeekBarView
 
     private let timeIndicator = UILabel()
+    
+    public var playButtonTapped: Effect<Void, Never> {
+        return playButton.publisher(for: UIControl.Event.touchUpInside).map { _ in }.eraseToEffect()
+    }
+    
+    private let store: Store<SuperPlayerControlState, SuperPlayerAction>
+    private let viewStore: ViewStore<SuperPlayerControlState, SuperPlayerAction>
+    private var disposeBag = Set<AnyCancellable>()
 
-    public init() {
+    public init(store: Store<SuperPlayerControlState, SuperPlayerAction>) {
+        self.store = store
+        viewStore = ViewStore(store)
         seekBar = PlayerSeekBarView()
 
         super.init(frame: .zero)
@@ -50,6 +63,15 @@ public final class PlayerControlView: UIView {
             timeIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
             timeIndicatorWidthConstraint,
         ])
+        
+        viewStore.publisher.playIcon
+            .sink { [weak self] icon in
+                guard let self = self else { return }
+                let image = UIImage(systemName: icon == "pip_pause" ? "pause.fill" : "play.fill")
+                self.playButton.setImage(image, for: .normal)
+                self.setNeedsLayout()
+            }
+            .store(in: &disposeBag)
         
         timeIndicator.attributedText = .body3("00:00 / 00:00", color: .white)
     }

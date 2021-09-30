@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import ComposableArchitecture
+import SuperPlayer
+import Combine
 
 class ViewController: UIViewController {
     
@@ -15,12 +18,50 @@ class ViewController: UIViewController {
         return spinner
     }()
     
-    let playerControl = PlayerControlView()
+    lazy var playerControl: PlayerControlView = {
+        let control = PlayerControlView(store: store.scope(
+            state: \.superPlayerState.control,
+            action: AppAction.superPlayerAction
+        ))
+        return control
+    }()
+    
+    let store = Store(
+        initialState: AppState(),
+        reducer: appReducer,
+        environment: AppEnvironment.mock
+    )
+    lazy var viewStore = ViewStore(self.store)
 
+    var disposeBag = Array<AnyCancellable>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        handleVideo(store: store.scope(
+            state: \.superPlayerState,
+            action: AppAction.superPlayerAction
+        ))
+        
         setupView()
+        
+        viewStore.send(.loadVideo)
+        
+        playerControl.playButtonTapped
+            .sink(receiveValue: { [weak self] _ in
+                self?.viewStore.send(.handlePausePlayVideo)
+            })
+            .store(in: &disposeBag)
+    }
+    
+    func handleVideo(store: Store<SuperPlayerState, SuperPlayerAction>) {
+        let superPlayer = SuperPlayerViewController(store: store)
+        superPlayer.view.frame = view.frame
+        superPlayer.view.backgroundColor = .black
+        
+        addChild(superPlayer)
+        view.addSubview(superPlayer.view)
+        superPlayer.didMove(toParent: self)
     }
     
     func setupView() {

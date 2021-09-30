@@ -19,6 +19,7 @@
 		F0773E82270564F500C80914 /* PlayerSeekBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0773E80270564F500C80914 /* PlayerSeekBarView.swift */; };
 		F0773E852705661F00C80914 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = F0773E842705661F00C80914 /* ComposableArchitecture */; };
 		F0773E8827056E5000C80914 /* AppReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0773E8727056E5000C80914 /* AppReducer.swift */; };
+		F0773E8B2705706F00C80914 /* SuperPlayer in Frameworks */ = {isa = PBXBuildFile; productRef = F0773E8A2705706F00C80914 /* SuperPlayer */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0773E852705661F00C80914 /* ComposableArchitecture in Frameworks */,
+				F0773E8B2705706F00C80914 /* SuperPlayer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,6 +128,7 @@
 			name = spTV;
 			packageProductDependencies = (
 				F0773E842705661F00C80914 /* ComposableArchitecture */,
+				F0773E8A2705706F00C80914 /* SuperPlayer */,
 			);
 			productName = spTV;
 			productReference = F0773E602705646400C80914 /* spTV.app */;
@@ -156,6 +159,7 @@
 			mainGroup = F0773E572705646400C80914;
 			packageReferences = (
 				F0773E832705661F00C80914 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				F0773E892705706F00C80914 /* XCRemoteSwiftPackageReference "ios-superplayer" */,
 			);
 			productRefGroup = F0773E612705646400C80914 /* Products */;
 			projectDirPath = "";
@@ -403,6 +407,14 @@
 				version = 0.19.0;
 			};
 		};
+		F0773E892705706F00C80914 /* XCRemoteSwiftPackageReference "ios-superplayer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tokopedia/ios-superplayer";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = "1.0.0-beta";
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -410,6 +422,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F0773E832705661F00C80914 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
+		};
+		F0773E8A2705706F00C80914 /* SuperPlayer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F0773E892705706F00C80914 /* XCRemoteSwiftPackageReference "ios-superplayer" */;
+			productName = SuperPlayer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
