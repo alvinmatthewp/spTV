@@ -35,7 +35,9 @@ public final class PlayerControlView: UIView {
     public init(store: Store<SuperPlayerControlState, SuperPlayerAction>) {
         self.store = store
         viewStore = ViewStore(store)
-        seekBar = PlayerSeekBarView()
+        seekBar = PlayerSeekBarView(
+            store: store.scope(state: { $0 })
+        )
 
         super.init(frame: .zero)
         

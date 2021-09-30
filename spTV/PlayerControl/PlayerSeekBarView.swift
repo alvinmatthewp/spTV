@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import Combine
+import ComposableArchitecture
+import SuperPlayer
 
 internal final class PlayerSeekBarView: UIView {
 
@@ -37,8 +40,17 @@ internal final class PlayerSeekBarView: UIView {
         node.layer.cornerRadius = PlayerSeekBarView.cornerRadius
         return node
     }()
+    
+    private let store: Store<SuperPlayerControlState, SuperPlayerAction>
+    private let viewStore: ViewStore<SuperPlayerControlState, SuperPlayerAction>
+    private var disposeBag = Set<AnyCancellable>()
+    
+    var barNodeDidLayout: Bool = false
+    
+    public init(store: Store<SuperPlayerControlState, SuperPlayerAction>) {
+        self.store = store
+        self.viewStore = ViewStore(store)
 
-    public init() {
         super.init(frame: .zero)
         
         seekerNode.layer.cornerRadius = PlayerSeekBarView.seekerRadius
@@ -75,6 +87,44 @@ internal final class PlayerSeekBarView: UIView {
         pan.cancelsTouchesInView = true
         seekerNode.isUserInteractionEnabled = true
         seekerNode.addGestureRecognizer(pan)
+        
+        viewStore.publisher.loadedTimes
+            .sink { [weak self] loadedTimes in
+                guard let self = self, let lastLoadedTime = loadedTimes.last else { return }
+                loadedTimeNodeWidthConstraint.constant = lastLoadedTime.barOffset + lastLoadedTime.barWidth
+                self.setNeedsLayout()
+            }
+            .store(in: &disposeBag)
+
+        viewStore.publisher.seekerPosition
+            .sink { [weak self] seekerPosition in
+                seekerPositionConstraint.constant = seekerPosition
+                self?.setNeedsLayout()
+            }
+            .store(in: &disposeBag)
+        
+        seekerNode.publisher(for: UIControl.Event.touchDown)
+            .sink { [viewStore] _ in
+                // before we start seeking time, we need to pause the player first
+                // common UX used in almost streaming platforms (Youtube, Netflix, Hotstar, etc.)
+                viewStore.send(.player(.callMethod(.pause)))
+            }
+            .store(in: &disposeBag)
+        
+        seekerNode.publisher(for: UIControl.Event.touchUpInside)
+            .sink { [viewStore] _ in
+                viewStore.send(.player(.callMethod(.play)))
+            }
+            .store(in: &disposeBag)
+    }
+    
+    override internal func layoutSubviews() {
+        super.layoutSubviews()
+        
+        if !barNodeDidLayout && barNode.frame != .zero {
+            barNodeDidLayout = true
+            viewStore.send(.seekBarWidth(barNode.frame.width))
+        }
     }
 
     @objc internal func panAction(pan: UIPanGestureRecognizer) {
@@ -85,7 +135,11 @@ internal final class PlayerSeekBarView: UIView {
 
         let point = pan.location(in: barNode)
         if point.x >= 0, point.x <= barNode.frame.width {
-            // do something
+            viewStore.send(.slidingSeeker(to: point.x))
+        }
+        
+        if pan.state == .ended {
+            viewStore.send(.doneSeeking)
         }
     }
     
