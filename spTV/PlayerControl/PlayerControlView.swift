@@ -73,7 +73,30 @@ public final class PlayerControlView: UIView {
             }
             .store(in: &disposeBag)
         
-        timeIndicator.attributedText = .body3("00:00 / 00:00", color: .white)
+        viewStore.publisher.actualDuration
+            .sink { [weak self] actualDuration in
+                guard let self = self else { return }
+                if actualDuration.seconds >= 3600 {
+                    // 00:00:00 / 00:00:00
+                    timeIndicatorWidthConstraint.constant = 118
+                } else {
+                    // 00:00 / 00:00
+                    timeIndicatorWidthConstraint.constant = 80
+                }
+                self.setNeedsLayout()
+            }
+            .store(in: &disposeBag)
+            
+        Publishers.CombineLatest(viewStore.publisher.currentTimeLabel, viewStore.publisher.actualDurationLabel)
+            .map { currentTimeLabel, actualDuration in
+                NSAttributedString .body3(currentTimeLabel + " / " + actualDuration, color: .white)
+            }
+            .sink { [weak self] currentTimeLabel in
+                guard let self = self else { return }
+                self.timeIndicator.attributedText = currentTimeLabel
+                self.setNeedsLayout()
+            }
+            .store(in: &disposeBag)
     }
     
     required init?(coder: NSCoder) {
