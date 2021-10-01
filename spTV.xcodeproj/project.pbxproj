@@ -15,7 +15,6 @@
 		F0773E702705646600C80914 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F0773E6E2705646600C80914 /* LaunchScreen.storyboard */; };
 		F0773E7B270564CB00C80914 /* UIControl+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0773E78270564CB00C80914 /* UIControl+Combine.swift */; };
 		F0773E7C270564CB00C80914 /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0773E79270564CB00C80914 /* NSAttributedString+Extensions.swift */; };
-		F0773E7D270564CB00C80914 /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0773E7A270564CB00C80914 /* Debounce.swift */; };
 		F0773E81270564F500C80914 /* PlayerControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0773E7F270564F500C80914 /* PlayerControlView.swift */; };
 		F0773E82270564F500C80914 /* PlayerSeekBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0773E80270564F500C80914 /* PlayerSeekBarView.swift */; };
 		F0773E852705661F00C80914 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = F0773E842705661F00C80914 /* ComposableArchitecture */; };
@@ -33,7 +32,6 @@
 		F0773E712705646600C80914 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F0773E78270564CB00C80914 /* UIControl+Combine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+Combine.swift"; sourceTree = "<group>"; };
 		F0773E79270564CB00C80914 /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
-		F0773E7A270564CB00C80914 /* Debounce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Debounce.swift; sourceTree = "<group>"; };
 		F0773E7F270564F500C80914 /* PlayerControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerControlView.swift; sourceTree = "<group>"; };
 		F0773E80270564F500C80914 /* PlayerSeekBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerSeekBarView.swift; sourceTree = "<group>"; };
 		F0773E8727056E5000C80914 /* AppReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReducer.swift; sourceTree = "<group>"; };
@@ -88,7 +86,6 @@
 			children = (
 				F0773E78270564CB00C80914 /* UIControl+Combine.swift */,
 				F0773E79270564CB00C80914 /* NSAttributedString+Extensions.swift */,
-				F0773E7A270564CB00C80914 /* Debounce.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -194,7 +191,6 @@
 				F0773E642705646400C80914 /* AppDelegate.swift in Sources */,
 				F0773E7C270564CB00C80914 /* NSAttributedString+Extensions.swift in Sources */,
 				F0773E81270564F500C80914 /* PlayerControlView.swift in Sources */,
-				F0773E7D270564CB00C80914 /* Debounce.swift in Sources */,
 				F0773E662705646400C80914 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
